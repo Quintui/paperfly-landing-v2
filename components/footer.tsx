@@ -27,14 +27,6 @@ export function Footer() {
                   Key Features
                 </Link>
               </li>
-              <li>
-                <Link
-                  href="/#workflow"
-                  className="hover:text-foreground transition-colors"
-                >
-                  AI RFP Tool
-                </Link>
-              </li>
             </ul>
           </div>
           <div>
@@ -46,14 +38,6 @@ export function Footer() {
                   className="hover:text-foreground transition-colors"
                 >
                   About
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="#"
-                  className="hover:text-foreground transition-colors"
-                >
-                  Who We Serve
                 </Link>
               </li>
               <li>
