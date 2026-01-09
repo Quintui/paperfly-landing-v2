@@ -3,7 +3,14 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+} from "@/components/ui/dropdown-menu";
 import { DEMO_BOOKING_URL, DASHBOARD_URL } from "@/lib/constants";
+import { ChevronDown } from "lucide-react";
 
 export function Header() {
   return (
@@ -21,35 +28,60 @@ export function Header() {
           </Link>
         </div>
         <nav className="hidden md:flex items-center gap-6">
-          <Link
-            href="/#features"
-            className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
-          >
-            Features
-          </Link>
-          <Link
-            href="/#workflow"
-            className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
-          >
-            How it Works
-          </Link>
+          {/* Product Dropdown */}
+          <DropdownMenu>
+            <DropdownMenuTrigger className="flex items-center gap-1 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors outline-none">
+              Product
+              <ChevronDown className="h-4 w-4" />
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="start">
+              <DropdownMenuItem asChild>
+                <Link href="/#features" className="w-full cursor-pointer">
+                  Features
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Link href="/#workflow" className="w-full cursor-pointer">
+                  How it Works
+                </Link>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+
+          {/* Pricing - standalone link */}
           <Link
             href="/pricing"
             className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
           >
             Pricing
           </Link>
+
+          {/* Resources Dropdown */}
+          <DropdownMenu>
+            <DropdownMenuTrigger className="flex items-center gap-1 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors outline-none">
+              Resources
+              <ChevronDown className="h-4 w-4" />
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="start">
+              <DropdownMenuItem asChild>
+                <Link href="/blog" className="w-full cursor-pointer">
+                  Blog
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Link href="/#faq" className="w-full cursor-pointer">
+                  FAQ
+                </Link>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+
+          {/* About - standalone link */}
           <Link
-            href="/#faq"
+            href="/about"
             className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
           >
-            FAQ
-          </Link>
-          <Link
-            href="/blog"
-            className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
-          >
-            Blog
+            About
           </Link>
         </nav>
         <div className="flex items-center gap-3">
