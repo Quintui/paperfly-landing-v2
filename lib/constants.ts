@@ -19,3 +19,6 @@ export const SOCIAL_LINKS = {
 
 // Copyright
 export const COPYRIGHT_YEAR = new Date().getFullYear();
+
+// Legal
+export const PRIVACY_POLICY_EFFECTIVE_DATE = "December 2, 2025";

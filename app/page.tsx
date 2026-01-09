@@ -1,21 +1,23 @@
 "use client";
 
-import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { DEMO_BOOKING_URL, DASHBOARD_URL } from "@/lib/constants";
 import {
   Check,
   Sparkles,
-  Users,
-  Shield,
-  Zap,
   Upload,
   Edit3,
   Send,
   BarChart3,
   ArrowRight,
   ChevronDown,
+  Briefcase,
+  Scale,
+  FileCheck,
+  ClipboardList,
+  Building2,
+  Calculator,
 } from "lucide-react";
 import Link from "next/link";
 import {
@@ -24,7 +26,170 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+
+// Role data for the compliance section
+const rolesData = [
+  {
+    id: "procurement",
+    title: "Procurement Officers",
+    icon: Briefcase,
+    headline: "Streamline your entire procurement cycle",
+    description:
+      "From requisition to contract award, manage every step with full visibility and compliance tracking.",
+    benefits: [
+      "Automated compliance checklists for every procurement stage",
+      "Real-time tracking of vendor submissions and evaluations",
+      "Built-in approval workflows that match your org structure",
+      "Complete audit trail for every decision made",
+    ],
+  },
+  {
+    id: "legal",
+    title: "Legal Teams",
+    icon: Scale,
+    headline: "Review and approve with confidence",
+    description:
+      "Ensure every contract meets regulatory requirements with integrated legal review workflows.",
+    benefits: [
+      "Clause library with pre-approved legal language",
+      "Version control for contract negotiations",
+      "Risk flagging for non-standard terms",
+      "Integration with your existing contract management",
+    ],
+  },
+  {
+    id: "compliance",
+    title: "Compliance Managers",
+    icon: FileCheck,
+    headline: "Stay audit-ready at all times",
+    description:
+      "Monitor compliance across all procurement activities with real-time dashboards and alerts.",
+    benefits: [
+      "Automated compliance scoring for each RFP",
+      "Policy violation alerts before they become issues",
+      "Customizable compliance frameworks (SOC 2, ISO, etc.)",
+      "One-click audit report generation",
+    ],
+  },
+  {
+    id: "project",
+    title: "Project Managers",
+    icon: ClipboardList,
+    headline: "Keep projects on track and on budget",
+    description:
+      "Coordinate stakeholders, manage timelines, and ensure deliverables meet specifications.",
+    benefits: [
+      "Gantt-style timeline views for RFP milestones",
+      "Stakeholder assignment and notification system",
+      "Budget tracking integrated with procurement",
+      "Dependencies management across departments",
+    ],
+  },
+  {
+    id: "finance",
+    title: "Finance Directors",
+    icon: Calculator,
+    headline: "Control spend with complete visibility",
+    description:
+      "Track budgets, forecast costs, and ensure financial compliance across all procurement.",
+    benefits: [
+      "Real-time budget consumption dashboards",
+      "Multi-year contract cost projections",
+      "Integration with ERP and accounting systems",
+      "Variance analysis and spend optimization insights",
+    ],
+  },
+  {
+    id: "executives",
+    title: "C-Suite Executives",
+    icon: Building2,
+    headline: "Strategic oversight without the details",
+    description:
+      "Get the insights you need to make informed decisions without getting lost in the weeds.",
+    benefits: [
+      "Executive dashboards with key procurement metrics",
+      "Risk exposure summaries across all contracts",
+      "Savings and efficiency reports",
+      "Board-ready compliance certifications",
+    ],
+  },
+];
+import { Header } from "@/components/header";
+import { Footer } from "@/components/footer";
+
+// Role-Based Section Component
+function RoleBasedSection() {
+  const [activeRole, setActiveRole] = useState(rolesData[0]);
+
+  return (
+    <section className="py-24 md:py-32 border-b border-border">
+      <div className="container">
+        <div className="mb-16 scroll-animate">
+          <h2 className="text-4xl md:text-5xl font-bold tracking-tight mb-6 text-balance">
+            Built for every role in your organization
+          </h2>
+          <p className="text-lg text-muted-foreground max-w-2xl leading-relaxed">
+            Whether you&apos;re in procurement, legal, compliance, or the
+            C-suite—Paperfly adapts to how you work.
+          </p>
+        </div>
+
+        <div className="grid lg:grid-cols-12 gap-12 lg:gap-16 scroll-animate">
+          {/* Left side - Role list */}
+          <div className="lg:col-span-4">
+            <div className="space-y-1">
+              {rolesData.map((role) => {
+                const Icon = role.icon;
+                const isActive = activeRole.id === role.id;
+                return (
+                  <button
+                    type="button"
+                    key={role.id}
+                    onClick={() => setActiveRole(role)}
+                    className={`w-full flex items-center gap-3 px-4 py-3 text-left transition-colors duration-200 rounded-lg ${
+                      isActive ? "bg-muted" : "hover:bg-muted/50"
+                    }`}
+                  >
+                    <Icon
+                      className={`h-5 w-5 shrink-0 ${isActive ? "text-primary" : "text-muted-foreground"}`}
+                    />
+                    <span
+                      className={`font-medium ${isActive ? "text-foreground" : "text-muted-foreground"}`}
+                    >
+                      {role.title}
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Right side - Role details */}
+          <div className="lg:col-span-8">
+            <div className="lg:pl-8 lg:border-l border-border">
+              <h3 className="text-2xl md:text-3xl font-bold tracking-tight mb-4">
+                {activeRole.headline}
+              </h3>
+              <p className="text-lg text-muted-foreground mb-8 leading-relaxed">
+                {activeRole.description}
+              </p>
+
+              <ul className="space-y-3">
+                {activeRole.benefits.map((benefit, index) => (
+                  <li key={index} className="flex items-start gap-3 group">
+                    <Check className="h-5 w-5 text-primary shrink-0 mt-0.5" />
+                    <span className="text-muted-foreground">{benefit}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
 
 export default function Home() {
   useEffect(() => {
@@ -48,50 +213,7 @@ export default function Home() {
 
   return (
     <div className="min-h-screen">
-      {/* Header */}
-      <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-        <div className="container flex h-16 items-center justify-between">
-          <div className="flex items-center gap-2">
-            <Image
-              src="/logo.svg"
-              alt="Paperfly"
-              width={140}
-              height={32}
-              priority
-            />
-          </div>
-          <nav className="hidden md:flex items-center gap-6">
-            <Link
-              href="#features"
-              className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
-            >
-              Features
-            </Link>
-            <Link
-              href="#workflow"
-              className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
-            >
-              How it Works
-            </Link>
-            <Link
-              href="#faq"
-              className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
-            >
-              FAQ
-            </Link>
-          </nav>
-          <div className="flex items-center gap-3">
-            <Link href={DASHBOARD_URL}>
-              <Button variant="ghost" size="sm">
-                Get Started
-              </Button>
-            </Link>
-            <Link href={DEMO_BOOKING_URL}>
-              <Button size="sm">Book a Demo</Button>
-            </Link>
-          </div>
-        </div>
-      </header>
+      <Header />
 
       {/* Hero Section */}
       <section className="relative overflow-hidden border-b border-border">
@@ -127,7 +249,7 @@ export default function Home() {
               style={{ animationDelay: "0.2s" }}
             >
               Most RFPs start with a blank page and end with manual scoring in
-              spreadsheets. There's a better way.
+              spreadsheets. There&apos;s a better way.
             </p>
             <div
               className="flex flex-col sm:flex-row gap-4 justify-center animate-fade-up"
@@ -360,146 +482,101 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Feature 3: Compliance */}
-      <section className="py-24 md:py-32 border-b border-border relative overflow-hidden">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_80%,rgba(0,93,242,0.08),transparent_50%)]" />
-
-        <div className="container relative">
-          <div className="text-center mb-16 scroll-animate">
-            <h2 className="text-4xl md:text-5xl font-bold tracking-tight mb-6">
-              Built for teams that need compliance
-            </h2>
-            <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-              Whether you're meeting bilingual mandates, tracking audit trails,
-              or coordinating across departments—Paperfly keeps everything in
-              one place.
-            </p>
-          </div>
-          <div className="grid md:grid-cols-3 gap-8">
-            <Card className="p-8 bg-card hover:shadow-2xl transition-all duration-500 scroll-animate group border-border hover:border-primary/40">
-              <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-primary/10 text-primary mb-6 group-hover:bg-primary group-hover:text-primary-foreground group-hover:scale-110 transition-all duration-300">
-                <Shield className="h-7 w-7" />
-              </div>
-              <h3 className="text-xl font-semibold mb-3 text-card-foreground">
-                Government
-              </h3>
-              <p className="text-muted-foreground leading-relaxed">
-                Meet procurement guidelines with auditable records and full
-                compliance tracking.
-              </p>
-            </Card>
-            <Card
-              className="p-8 bg-card hover:shadow-2xl transition-all duration-500 scroll-animate group border-border hover:border-primary/40"
-              style={{ animationDelay: "0.1s" }}
-            >
-              <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-primary/10 text-primary mb-6 group-hover:bg-primary group-hover:text-primary-foreground group-hover:scale-110 transition-all duration-300">
-                <Users className="h-7 w-7" />
-              </div>
-              <h3 className="text-xl font-semibold mb-3 text-card-foreground">
-                Healthcare
-              </h3>
-              <p className="text-muted-foreground leading-relaxed">
-                Coordinate IT, legal, and clinical reviews in one streamlined
-                workflow.
-              </p>
-            </Card>
-            <Card
-              className="p-8 bg-card hover:shadow-2xl transition-all duration-500 scroll-animate group border-border hover:border-primary/40"
-              style={{ animationDelay: "0.2s" }}
-            >
-              <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-primary/10 text-primary mb-6 group-hover:bg-primary group-hover:text-primary-foreground group-hover:scale-110 transition-all duration-300">
-                <Zap className="h-7 w-7" />
-              </div>
-              <h3 className="text-xl font-semibold mb-3 text-card-foreground">
-                Education
-              </h3>
-              <p className="text-muted-foreground leading-relaxed">
-                Handle approvals and tight timelines without bottlenecks or
-                delays.
-              </p>
-            </Card>
-          </div>
-        </div>
-      </section>
+      {/* Feature 3: Role-Based Compliance Section */}
+      <RoleBasedSection />
 
       {/* Workflow Section */}
       <section
         id="workflow"
-        className="py-24 md:py-32 bg-muted/30 border-b border-border relative overflow-hidden"
+        className="py-20 md:py-28 bg-muted/30 border-b border-border relative overflow-hidden"
       >
         <div className="absolute inset-0 opacity-30 bg-[radial-gradient(circle,#005DF2_1px,transparent_1px)] bg-[size:32px_32px]" />
 
         <div className="container relative">
-          <div className="text-center mb-20 scroll-animate">
-            <h2 className="text-4xl md:text-5xl font-bold tracking-tight mb-6">
-              Simple workflow, powerful results
+          <div className="text-center mb-12 md:mb-16 scroll-animate">
+            <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-3">
+              From requirements to results in 5 steps
             </h2>
+            <p className="text-muted-foreground text-lg">
+              A streamlined workflow that saves hours on every RFP
+            </p>
           </div>
 
-          <div className="max-w-4xl mx-auto space-y-8">
-            {[
-              {
-                icon: Upload,
-                title: "Upload requirements",
-                desc: "Start with past documents, meeting notes, or a simple description of what you need.",
-                delay: "0s",
-              },
-              {
-                icon: Sparkles,
-                title: "Generate your RFP",
-                desc: "AI drafts a complete, professional RFP in minutes—bilingual if needed.",
-                delay: "0.1s",
-              },
-              {
-                icon: Edit3,
-                title: "Refine and collaborate",
-                desc: "Review with your team, make edits, and finalize the details.",
-                delay: "0.2s",
-              },
-              {
-                icon: Send,
-                title: "Publish to vendors",
-                desc: "Send instantly with secure vendor forms for structured responses.",
-                delay: "0.3s",
-              },
-              {
-                icon: BarChart3,
-                title: "Review scored responses",
-                desc: "Responses arrive pre-scored. See top candidates immediately without manual comparison.",
-                delay: "0.4s",
-              },
-            ].map((step, index) => {
-              const Icon = step.icon;
-              const isLast = index === 4;
+          {/* Horizontal Timeline */}
+          <div
+            className="relative max-w-6xl mx-auto scroll-animate"
+            style={{ "--delay": "0s" } as React.CSSProperties}
+          >
+            {/* Timeline connector line - hidden on mobile, animates left to right */}
+            <div className="hidden md:block absolute top-8 left-[10%] right-[10%] h-0.5 bg-primary/20">
+              <div className="h-full bg-gradient-to-r from-primary to-primary/60 origin-left scale-x-0 transition-transform duration-[1.8s] delay-[0.4s] [transition-timing-function:cubic-bezier(0.4,0,0.2,1)] [.in-view_&]:scale-x-100" />
+            </div>
 
-              return (
-                <div
-                  key={index}
-                  className={`flex gap-6 items-start group scroll-animate`}
-                  style={{ animationDelay: step.delay }}
-                >
-                  <div className="flex-shrink-0 w-16 flex flex-col items-center">
-                    <div className="relative flex h-16 w-16 items-center justify-center rounded-xl bg-primary/10 text-primary border-2 border-primary/20 group-hover:bg-primary group-hover:text-primary-foreground group-hover:scale-110 transition-all duration-300 group-hover:shadow-lg group-hover:shadow-primary/20">
-                      <Icon className="h-7 w-7" />
-                      <div className="absolute -top-2 -right-2 w-6 h-6 rounded-full bg-primary text-primary-foreground text-xs font-bold flex items-center justify-center border-2 border-background">
+            {/* Steps */}
+            <div className="grid grid-cols-1 md:grid-cols-5 gap-8 md:gap-4">
+              {[
+                {
+                  icon: Upload,
+                  title: "Upload",
+                  desc: "Past documents, notes, or a simple description",
+                },
+                {
+                  icon: Sparkles,
+                  title: "Generate",
+                  desc: "AI drafts your complete RFP in minutes",
+                },
+                {
+                  icon: Edit3,
+                  title: "Refine",
+                  desc: "Review with your team and finalize",
+                },
+                {
+                  icon: Send,
+                  title: "Publish",
+                  desc: "Send to vendors with secure forms",
+                },
+                {
+                  icon: BarChart3,
+                  title: "Review",
+                  desc: "See pre-scored responses instantly",
+                },
+              ].map((step, index) => {
+                const Icon = step.icon;
+
+                return (
+                  <div
+                    key={index}
+                    className="flex flex-col items-center text-center group scroll-animate"
+                    style={
+                      {
+                        "--delay": `${[0.3, 0.7, 1.0, 1.25, 1.45][index]}s`,
+                      } as React.CSSProperties
+                    }
+                  >
+                    {/* Step circle with icon */}
+                    <div className="relative mb-4">
+                      <div className="flex h-16 w-16 items-center justify-center rounded-full bg-background border-2 border-primary/30 text-primary group-hover:bg-primary group-hover:text-primary-foreground group-hover:scale-110 group-hover:border-primary transition-all duration-300 shadow-sm group-hover:shadow-lg group-hover:shadow-primary/20">
+                        <Icon className="h-6 w-6" />
+                      </div>
+                      {/* Step number badge */}
+                      <div className="absolute -top-1 -right-1 w-6 h-6 rounded-full bg-primary text-primary-foreground text-xs font-bold flex items-center justify-center border-2 border-background">
                         {index + 1}
                       </div>
                     </div>
-                    {!isLast && (
-                      <div className="w-px h-full min-h-[40px] bg-gradient-to-b from-primary/40 via-primary/20 to-transparent mt-3" />
-                    )}
-                  </div>
-                  <div className="flex-1 pt-3">
-                    <h3 className="text-xl font-semibold mb-2 text-foreground group-hover:text-primary transition-colors">
+
+                    {/* Title */}
+                    <h3 className="text-base font-semibold mb-1.5 text-foreground group-hover:text-primary transition-colors">
                       {step.title}
                     </h3>
-                    <p className="text-muted-foreground leading-relaxed">
+
+                    {/* Description */}
+                    <p className="text-sm text-muted-foreground leading-relaxed max-w-[180px]">
                       {step.desc}
                     </p>
                   </div>
-                </div>
-              );
-            })}
+                );
+              })}
+            </div>
           </div>
         </div>
       </section>
@@ -597,89 +674,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="border-t border-border bg-muted/30">
-        <div className="container py-12">
-          <div className="grid md:grid-cols-4 gap-8 mb-8">
-            <div>
-              <div className="flex items-center gap-2 mb-4">
-                <Image src="/logo.svg" alt="Paperfly" width={140} height={32} />
-              </div>
-              <p className="text-sm text-muted-foreground leading-relaxed">
-                AI-powered procurement platform for modern teams.
-              </p>
-            </div>
-            <div>
-              <h3 className="font-semibold mb-4 text-foreground">Features</h3>
-              <ul className="space-y-2 text-sm text-muted-foreground">
-                <li>
-                  <Link
-                    href="#"
-                    className="hover:text-foreground transition-colors"
-                  >
-                    Key Features
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="#"
-                    className="hover:text-foreground transition-colors"
-                  >
-                    AI RFP Tool
-                  </Link>
-                </li>
-              </ul>
-            </div>
-            <div>
-              <h3 className="font-semibold mb-4 text-foreground">Company</h3>
-              <ul className="space-y-2 text-sm text-muted-foreground">
-                <li>
-                  <Link
-                    href="#"
-                    className="hover:text-foreground transition-colors"
-                  >
-                    About
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="#"
-                    className="hover:text-foreground transition-colors"
-                  >
-                    Who We Serve
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="#"
-                    className="hover:text-foreground transition-colors"
-                  >
-                    Blog
-                  </Link>
-                </li>
-              </ul>
-            </div>
-            <div>
-              <h3 className="font-semibold mb-4 text-foreground">Legal</h3>
-              <ul className="space-y-2 text-sm text-muted-foreground">
-                <li>
-                  <Link
-                    href="#"
-                    className="hover:text-foreground transition-colors"
-                  >
-                    Privacy Policy
-                  </Link>
-                </li>
-              </ul>
-            </div>
-          </div>
-          <div className="pt-8 border-t border-border">
-            <p className="text-sm text-muted-foreground text-center">
-              © 2026 Paperfly. All rights reserved.
-            </p>
-          </div>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 }

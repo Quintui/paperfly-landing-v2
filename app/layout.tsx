@@ -40,7 +40,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${inter.className} font-sans antialiased`}>
+      <body
+        className={`${inter.className} ${jetbrainsMono.variable} font-sans antialiased`}
+      >
         {children}
         <Analytics />
       </body>
