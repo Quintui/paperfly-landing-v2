@@ -37,6 +37,10 @@ export default function PricingPage() {
   const [billingCycle, setBillingCycle] = useState<"monthly" | "yearly">(
     "yearly",
   );
+  const [currency, setCurrency] = useState<"USD" | "CAD">("USD");
+
+  // Exchange rate: 1 USD = 1.39 CAD (approximate)
+  const exchangeRate = 1.39;
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -57,9 +61,24 @@ export default function PricingPage() {
     return () => observer.disconnect();
   }, []);
 
-  const monthlyPrice = 499;
-  const yearlyPrice = 416;
-  const yearlyTotal = 4990;
+  const monthlyPriceUSD = 499;
+  const yearlyPriceUSD = 416;
+  const yearlyTotalUSD = 4990;
+
+  // Calculate prices based on currency
+  const monthlyPrice =
+    currency === "USD"
+      ? monthlyPriceUSD
+      : Math.round(monthlyPriceUSD * exchangeRate);
+  const yearlyPrice =
+    currency === "USD"
+      ? yearlyPriceUSD
+      : Math.round(yearlyPriceUSD * exchangeRate);
+  const yearlyTotal =
+    currency === "USD"
+      ? yearlyTotalUSD
+      : Math.round(yearlyTotalUSD * exchangeRate);
+  const currencySymbol = currency === "USD" ? "$" : "$";
 
   return (
     <div className="min-h-screen">
@@ -155,13 +174,17 @@ export default function PricingPage() {
               <div className="mb-6">
                 <div className="flex items-baseline gap-2">
                   <span className="text-5xl font-bold text-foreground">
-                    ${billingCycle === "yearly" ? yearlyPrice : monthlyPrice}
+                    {currencySymbol}
+                    {billingCycle === "yearly" ? yearlyPrice : monthlyPrice}
                   </span>
-                  <span className="text-muted-foreground">USD per month</span>
+                  <span className="text-muted-foreground">
+                    {currency} per month
+                  </span>
                 </div>
                 {billingCycle === "yearly" && (
                   <p className="text-sm text-muted-foreground mt-2">
-                    Billed ${yearlyTotal.toLocaleString()} yearly
+                    Billed {currencySymbol}
+                    {yearlyTotal.toLocaleString()} {currency} yearly
                   </p>
                 )}
               </div>
@@ -291,6 +314,42 @@ export default function PricingPage() {
                 Volume discounts • SLA agreements available • Custom features
               </p>
             </Card>
+          </div>
+
+          {/* Currency Toggle */}
+          <div className="flex flex-col items-center gap-3 mt-10">
+            <p className="text-sm text-muted-foreground">View prices in:</p>
+            <div className="inline-flex items-center gap-2 p-1 rounded-full bg-muted/50 border border-border">
+              <button
+                type="button"
+                onClick={() => setCurrency("USD")}
+                className={`px-5 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
+                  currency === "USD"
+                    ? "bg-background text-foreground shadow-sm"
+                    : "text-muted-foreground hover:text-foreground"
+                }`}
+              >
+                🇺🇸 USD
+              </button>
+              <button
+                type="button"
+                onClick={() => setCurrency("CAD")}
+                className={`px-5 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
+                  currency === "CAD"
+                    ? "bg-background text-foreground shadow-sm"
+                    : "text-muted-foreground hover:text-foreground"
+                }`}
+              >
+                🇨🇦 CAD
+              </button>
+            </div>
+            <p
+              className={`text-xs text-muted-foreground transition-opacity duration-200 ${
+                currency === "CAD" ? "opacity-100" : "opacity-0"
+              }`}
+            >
+              * CAD prices are approximate based on current exchange rates
+            </p>
           </div>
         </div>
       </section>
