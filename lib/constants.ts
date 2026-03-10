@@ -3,7 +3,7 @@
  */
 
 // URLs
-export const DEMO_BOOKING_URL = "https://meetings.hubspot.com/joel611";
+export const DEMO_BOOKING_URL = "https://meetings-na3.hubspot.com/jdennis";
 export const DASHBOARD_URL = "https://dashboard.paperfly.app";
 
 // Company information
